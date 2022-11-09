@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { loginInfo } from '../Redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -23,7 +25,8 @@ class Login extends React.Component {
     const result = await require.json();
     // console.log(result.token);
     localStorage.setItem('token', result.token);
-    const { history } = this.props;
+    const { history, dispatch } = this.props;
+    dispatch(loginInfo(this.state));
     history.push('/game');
   };
 
@@ -82,6 +85,12 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
-export default Login;
+const mapStateToProps = ({ loginReducer: { name, email } }) => ({
+  name,
+  email,
+});
+
+export default connect(mapStateToProps)(Login);
