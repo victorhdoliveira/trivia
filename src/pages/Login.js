@@ -29,6 +29,7 @@ class Login extends React.Component {
 
   render() {
     const { name, email } = this.state;
+    const { history } = this.props;
 
     const acceptablePassword = 1;
     const passwordValidation = name.length > acceptablePassword;
@@ -64,6 +65,13 @@ class Login extends React.Component {
           data-testid="btn-play"
         >
           Play
+        </button>
+        <button
+          type="submit"
+          data-testid="btn-settings"
+          onClick={ () => history.push('/settings') }
+        >
+          config
         </button>
       </div>
     );
