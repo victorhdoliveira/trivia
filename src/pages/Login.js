@@ -23,7 +23,6 @@ class Login extends React.Component {
     const url = 'https://opentdb.com/api_token.php?command=request';
     const require = await fetch(url);
     const result = await require.json();
-    // console.log(result.token);
     localStorage.setItem('token', result.token);
     const { history, dispatch } = this.props;
     dispatch(loginInfo(this.state));
@@ -88,9 +87,9 @@ Login.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ loginReducer: { name, email } }) => ({
+/* const mapStateToProps = ({ loginReducer: { name, email } }) => ({
   name,
   email,
-});
+}); */
 
-export default connect(mapStateToProps)(Login);
+export default connect(/* mapStateToProps */)(Login);
