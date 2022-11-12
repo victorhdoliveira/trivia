@@ -67,6 +67,10 @@ class Game extends React.Component {
         border: '3px solid red',
       };
     }
+
+    // const incorrectStyle = (clicked || disabled)
+    //   && { border: '3px solid red' };
+
     if (loading === false) {
       return <span>loading</span>;
     }
