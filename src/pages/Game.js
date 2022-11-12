@@ -69,7 +69,7 @@ class Game extends React.Component {
     }
 
     // const incorrectStyle = (clicked || disabled)
-    //   && { border: '3px solid red' };
+    //   && { border: '3px solid red' }; testes de condicional
 
     if (loading === false) {
       return <span>loading</span>;
