@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import './Games.css';
 
 class Game extends React.Component {
   constructor() {
@@ -9,6 +10,8 @@ class Game extends React.Component {
       triviaInfo: {},
       changeQuestion: 0,
       loading: false,
+      clicked: false,
+      disabled: false,
     };
   }
 
@@ -16,6 +19,7 @@ class Game extends React.Component {
     const url = `https://opentdb.com/api.php?amount=5&token=${localStorage.getItem('token')}`;
     const require = await fetch(url);
     const result = await require.json();
+    this.expiredQuestion();
     if (result.response_code !== 0) {
       const { history } = this.props;
       localStorage.removeItem('token');
@@ -25,6 +29,15 @@ class Game extends React.Component {
       loading: true,
     });
   }
+
+  questionCheck = () => {
+    this.setState({ clicked: true });
+  };
+
+  expiredQuestion = () => {
+    const seconds = 30000;
+    setTimeout(() => { this.setState({ disabled: true }); }, seconds);
+  };
 
   // https://www.horadecodar.com.br/2021/05/10/como-embaralhar-um-array-em-javascript-shuffle/
   shuffleArrayy(arr) {
@@ -40,7 +53,24 @@ class Game extends React.Component {
   }
 
   render() {
-    const { triviaInfo, changeQuestion, loading } = this.state;
+    const { triviaInfo, changeQuestion, loading, clicked, disabled } = this.state;
+
+    let correctStyle = {};
+    let wrongStyle = {};
+    if (clicked || disabled) {
+      correctStyle = {
+        border: '3px solid rgb(6, 240, 15)',
+      };
+    }
+    if (clicked || disabled) {
+      wrongStyle = {
+        border: '3px solid red',
+      };
+    }
+
+    // const incorrectStyle = (clicked || disabled)
+    //   && { border: '3px solid red' }; testes de condicional
+
     if (loading === false) {
       return <span>loading</span>;
     }
@@ -74,6 +104,10 @@ class Game extends React.Component {
           { this.shuffleArrayy(answer).map((answers, index) => (
             answers === correctAnswer ? (
               <button
+                disabled={ disabled }
+                style={ correctStyle }
+                onClick={ this.questionCheck }
+                className="answer"
                 key={ index }
                 type="button"
                 data-testid="correct-answer"
@@ -82,6 +116,10 @@ class Game extends React.Component {
               </button>)
               : (
                 <button
+                  disabled={ disabled }
+                  onClick={ this.questionCheck }
+                  style={ wrongStyle }
+                  className="answer"
                   key={ index }
                   type="button"
                   data-testid={ `"wrong-answer-${index}"` }
