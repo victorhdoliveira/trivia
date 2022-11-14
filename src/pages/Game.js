@@ -11,6 +11,7 @@ class Game extends React.Component {
     this.state = {
       triviaInfo: {},
       changeQuestion: 0,
+      changeAnswers: 1,
       loading: false,
       clicked: false,
       disabled: false,
@@ -73,6 +74,24 @@ class Game extends React.Component {
           timer: prevState.timer - 1,
         }));
       }, oneSecond);
+    }
+  };
+
+  nextQuestion = () => {
+    const { triviaInfo, changeAnswers, changeQuestion } = this.state;
+    const { history } = this.props;
+    const lastQuestionIndex = 4;
+
+    if (changeQuestion < lastQuestionIndex) {
+      this.setState((prevState) => ({
+        clicked: false,
+        changeQuestion: prevState.changeQuestion + 1,
+        changeAnswers: prevState.changeAnswers + 1,
+        answersOptions: [triviaInfo[changeAnswers].correct_answer,
+          ...triviaInfo[changeAnswers].incorrect_answers],
+      }));
+    } else {
+      history.push('/feedback');
     }
   };
 
@@ -172,6 +191,18 @@ class Game extends React.Component {
                 </button>)
           )) }
         </section>
+        <div>
+          { clicked ? (
+            <button
+              type="button"
+              data-testid="btn-next"
+              onClick={ this.nextQuestion }
+              disabled={ timer === 0 }
+            >
+              Next
+            </button>
+          ) : ''}
+        </div>
       </div>
     );
   }
