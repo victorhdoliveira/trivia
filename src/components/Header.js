@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 
 class Header extends React.Component {
@@ -12,8 +12,8 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    const { email } = this.props;
-    const emailUrl = md5(email).toString();
+    const { gravatarEmail } = this.props;
+    const emailUrl = md5(gravatarEmail).toString();
     const url = `https://www.gravatar.com/avatar/${emailUrl}`;
     this.setState({
       urlGravatar: url,
@@ -21,7 +21,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const { name } = this.props;
+    const { name, score } = this.props;
     const { urlGravatar } = this.state;
     return (
       <div>
@@ -38,21 +38,23 @@ class Header extends React.Component {
         <span
           data-testid="header-score"
         >
-          Placar: 0
+          { score }
         </span>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ loginReducer: { name, email } }) => ({
+const mapStateToProps = ({ player: { name, gravatarEmail, score } }) => ({
   name,
-  email,
+  gravatarEmail,
+  score,
 });
 
 Header.propTypes = {
   name: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);
