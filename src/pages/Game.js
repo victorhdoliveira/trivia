@@ -2,7 +2,7 @@ import PropTypes, { element } from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import { scoreInfo } from '../Redux/actions/index';
+import { assertionsInfo, scoreInfo } from '../Redux/actions/index';
 import './Games.css';
 
 class Game extends React.Component {
@@ -55,6 +55,7 @@ class Game extends React.Component {
     const mediumValue = 2;
     const hardValue = 3;
     if (id === 'correct-answer') {
+      dispatch(assertionsInfo(1));
       if (difficulty === 'easy') {
         dispatch(scoreInfo(constant + (timer * easyValue)));
       } else if (difficulty === 'medium') {
