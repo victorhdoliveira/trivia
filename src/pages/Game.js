@@ -82,6 +82,7 @@ class Game extends React.Component {
     const { triviaInfo, changeAnswers, changeQuestion } = this.state;
     const { history } = this.props;
     const lastQuestionIndex = 4;
+    const magicNumber = 0.5;
 
     if (changeQuestion < lastQuestionIndex) {
       this.setState((prevState) => ({
@@ -89,8 +90,10 @@ class Game extends React.Component {
         changeQuestion: prevState.changeQuestion + 1,
         changeAnswers: prevState.changeAnswers + 1,
         answersOptions: [triviaInfo[changeAnswers].correct_answer,
-          ...triviaInfo[changeAnswers].incorrect_answers],
+          ...triviaInfo[changeAnswers].incorrect_answers]
+          .sort(() => magicNumber - Math.random()),
       }));
+    // https://cursos.alura.com.br/forum/topico-sort-0-5-math-random-splice-0-3-229820
     } else {
       history.push('/feedback');
     }
