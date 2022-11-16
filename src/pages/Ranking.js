@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 
 class Ranking extends React.Component {
@@ -30,4 +30,6 @@ Ranking.propTypes = {
   }).isRequired,
 };
 
-export default connect()(Ranking);
+const mapStateToProps = ({ player }) => player;
+
+export default connect(mapStateToProps)(Ranking);
